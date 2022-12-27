@@ -1,3 +1,3 @@
 <template>
-  <p>Hello</p>
+  <p>Not Found</p>
 </template>
