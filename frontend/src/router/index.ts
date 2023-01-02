@@ -4,8 +4,11 @@ import NotFound from "@/views/NotFoundView.vue";
 import LoginView from "@/views/LoginView.vue";
 import LogoutView from "@/views/LogoutView.vue";
 import RegisterView from "@/views/RegisterView.vue";
+import SpotifyCallbackView from "@/views/SpotifyCallbackView.vue";
+import SpotifyAuthView from "@/views/SpotifyAuthView.vue";
 
 import { useUserStore } from "@/stores/user";
+import { useSpotifyStore } from "@/stores/spotify";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +34,16 @@ const router = createRouter({
       component: RegisterView,
     },
     {
+      path: "/spotify/",
+      name: "spotifyAuth",
+      component: SpotifyAuthView,
+    },
+    {
+      path: "/spotify/callback/",
+      name: "spotifyCallback",
+      component: SpotifyCallbackView,
+    },
+    {
       path: "/:pathMatch(.*)*",
       name: "404",
       component: NotFound,
@@ -40,6 +53,10 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   const user = useUserStore();
+  const spotify = useSpotifyStore();
+
+  console.log(spotify.accessToken);
+
   if (!user.isLogged) {
     if (to.name === "register" || to.name === "login") {
       return;
@@ -51,6 +68,14 @@ router.beforeEach(async (to, from) => {
 
   if (user.isLogged && (to.name === "login" || to.name === "register")) {
     return { name: "home" };
+  }
+
+  if (
+    user.isLogged &&
+    spotify.accessToken === "" &&
+    !to.name.includes("spotify")
+  ) {
+    return { name: "spotifyAuth" };
   }
 });
 
