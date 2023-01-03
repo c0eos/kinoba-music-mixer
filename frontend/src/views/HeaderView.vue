@@ -7,7 +7,9 @@ const user = useUserStore();
 
 <template>
   <header class="bg-gray-800">
-    <h1 class="mx-auto text-center text-3xl pt-4">Music Mixer</h1>
+    <RouterLink to="/">
+      <h1 class="mx-auto text-center text-3xl pt-4">Music Mixer</h1>
+    </RouterLink>
     <div>
       <nav class="flex justify-end pb-2">
         <div class="flex">

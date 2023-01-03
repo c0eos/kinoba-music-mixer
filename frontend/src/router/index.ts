@@ -55,8 +55,6 @@ router.beforeEach(async (to, from) => {
   const user = useUserStore();
   const spotify = useSpotifyStore();
 
-  console.log(spotify.accessToken);
-
   if (!user.isLogged) {
     if (to.name === "register" || to.name === "login") {
       return;

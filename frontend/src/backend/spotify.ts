@@ -1,45 +1,46 @@
 import { useSpotifyStore } from "@/stores/spotify";
+import axios from "axios";
 
 const baseURL = "https://api.spotify.com/v1";
 
 export async function transfertPlayback(device_id: string) {
   const spotifyStore = useSpotifyStore();
-  return fetch(`${baseURL}/me/player`, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${spotifyStore.accessToken}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  return axios.put(
+    `${baseURL}/me/player`,
+    {
       device_ids: [device_id],
       play: false,
-    }),
-  }).catch((err) => console.error(err));
-}
-
-export async function search(query: string) {
-  const spotifyStore = useSpotifyStore();
-  return fetch(`${baseURL}/search?q=${query}&type=track`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${spotifyStore.accessToken}`,
-      "Content-Type": "application/json",
     },
-  })
-    .then((response) => response.json())
-    .catch((err) => console.error(err));
+    {
+      headers: {
+        Authorization: `Bearer ${spotifyStore.accessToken}`,
+      },
+    }
+  );
 }
 
 export async function play(uri: string) {
   const spotifyStore = useSpotifyStore();
-  return fetch(`${baseURL}/me/player/play?device_id=${spotifyStore.deviceId}`, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${spotifyStore.accessToken}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  return axios.put(
+    `${baseURL}/me/player/play?device_id=${spotifyStore.deviceId}`,
+    {
       uris: ["spotify:track:" + uri],
-    }),
-  }).catch((err) => console.error(err));
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${spotifyStore.accessToken}`,
+      },
+    }
+  );
+}
+
+export async function search(query: string) {
+  const spotifyStore = useSpotifyStore();
+  return axios
+    .get(`${baseURL}/search?q=${query}&type=track`, {
+      headers: {
+        Authorization: `Bearer ${spotifyStore.accessToken}`,
+      },
+    })
+    .then((response) => response.data);
 }

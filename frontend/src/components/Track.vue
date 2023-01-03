@@ -5,10 +5,22 @@ const props = defineProps(["track"]);
 const track = props.track;
 const album = track.album;
 const artists = track.artists;
+
+function hello() {
+  console.log(track.name);
+}
+
+function bye() {
+  console.log(album.name);
+}
 </script>
 
 <template>
-  <div class="flex items-center hover:bg-gray-800">
+  <div
+    class="flex items-center hover:bg-gray-800"
+    @dragstart="hello"
+    @dragenter="bye"
+  >
     <div class="w-12 mr-4">
       <img
         :src="album.images.at(0).url"

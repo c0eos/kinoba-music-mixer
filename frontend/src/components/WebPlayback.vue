@@ -80,24 +80,22 @@ onUnmounted(() => {
           Instance not active. Transfer your playback using your Spotify app
         </b>
       </template>
-      <template v-else>
-        <img
-          :src="currentTrack.album.images[0].url"
-          class="now-playing__cover"
-          alt=""
-        />
-        <div class="now-playing__side">
-          <div class="now-playing__name">{{ currentTrack.name }}</div>
-          <div class="now-playing__artist">
-            {{ currentTrack.artists[0].name }}
-          </div>
-          <button class="" @click="player.previousTrack()">&lt;&lt;</button>
-          <button class="" @click="player.togglePlay()">
-            {{ isPaused ? "PLAY" : "PAUSE" }}
-          </button>
-          <button class="" @click="player.nextTrack()">&gt;&gt;</button>
+      <img
+        :src="currentTrack.album.images[0].url"
+        class="now-playing__cover"
+        alt=""
+      />
+      <div class="now-playing__side">
+        <div class="now-playing__name">{{ currentTrack.name }}</div>
+        <div class="now-playing__artist">
+          {{ currentTrack.artists[0].name }}
         </div>
-      </template>
+        <button class="" @click="player.previousTrack()">&lt;&lt;</button>
+        <button class="" @click="player.togglePlay()">
+          {{ isPaused ? "PLAY" : "PAUSE" }}
+        </button>
+        <button class="" @click="player.nextTrack()">&gt;&gt;</button>
+      </div>
     </div>
   </div>
 </template>
