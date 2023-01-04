@@ -11,8 +11,6 @@ export const useSpotifyStore = defineStore("spotify", {
   },
   actions: {
     renew(access_token: string) {
-      console.log("renew");
-
       this.accessToken = access_token;
       const date = new Date();
       // expires_in est 3600s, ie 1h
