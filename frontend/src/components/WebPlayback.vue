@@ -2,8 +2,10 @@
 import { onMounted, onUnmounted, ref } from "vue";
 import { useSpotifyStore } from "@/stores/spotify";
 import { transfertPlayback } from "@/backend/spotify";
+import { usePlaylistStore } from "@/stores/playlist";
 
 const spotifyStore = useSpotifyStore();
+const playlistStore = usePlaylistStore();
 
 const token = spotifyStore.accessToken;
 
@@ -22,6 +24,21 @@ let player = ref<any>(undefined);
 
 function transfert(device_id) {
   transfertPlayback(device_id).then((response) => console.log(response));
+}
+
+function choosePlay() {
+  // start new queue
+  if (playlistStore.queueIdx === -1) {
+    playlistStore.playNext();
+  } else {
+    player.value.togglePlay();
+  }
+}
+
+function playNext(state) {
+  if (state.position >= state.duration) {
+    playlistStore.playNext();
+  }
 }
 
 onMounted(() => {
@@ -55,8 +72,11 @@ onMounted(() => {
         return;
       }
 
+      playNext(state);
+
       currentTrack.value = state.track_window.current_track;
       isPaused.value = state.paused;
+      playlistStore.isPaused = state.paused;
 
       player.value.getCurrentState().then((state) => {
         isActive.value = !!state;
@@ -73,28 +93,25 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="container">
-    <div class="main-wrapper">
+  <div class="">
+    <div class="">
       <template v-if="!isActive">
         <b>
-          Instance not active. Transfer your playback using your Spotify app
+          Instance not active. Wait for connection or transfer your playback
+          using your Spotify app.
         </b>
       </template>
-      <img
-        :src="currentTrack.album.images[0].url"
-        class="now-playing__cover"
-        alt=""
-      />
-      <div class="now-playing__side">
-        <div class="now-playing__name">{{ currentTrack.name }}</div>
-        <div class="now-playing__artist">
+      <img :src="currentTrack.album.images[0].url" class="" alt="" />
+      <div class="">
+        <div class="">{{ currentTrack.name }}</div>
+        <div class="">
           {{ currentTrack.artists[0].name }}
         </div>
         <button class="" @click="player.previousTrack()">&lt;&lt;</button>
-        <button class="" @click="player.togglePlay()">
+        <button class="" @click="choosePlay()">
           {{ isPaused ? "PLAY" : "PAUSE" }}
         </button>
-        <button class="" @click="player.nextTrack()">&gt;&gt;</button>
+        <button class="" @click="playlistStore.playNext()">&gt;&gt;</button>
       </div>
     </div>
   </div>

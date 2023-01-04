@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import WebPlayback from "@/components/WebPlayback.vue";
 import SpotifySearch from "@/components/SpotifySearch.vue";
+import VinylPlayerView from "@/views/VinylPlayerView.vue";
 </script>
 
 <template>
-  <p>Hello</p>
   <WebPlayback />
+  <VinylPlayerView />
   <SpotifySearch />
 </template>
