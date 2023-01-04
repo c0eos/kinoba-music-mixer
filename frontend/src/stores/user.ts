@@ -1,27 +1,37 @@
 import { defineStore } from "pinia";
+import { login, register } from "@/backend/user";
 
 export const useUserStore = defineStore("user", {
   state: () => {
     const defaultState = {
       isLogged: false,
       token: "",
+      user_id: "",
     };
-    const localToken = window.localStorage.getItem("token");
-    if (localToken && localToken !== "") {
-      defaultState.token = localToken;
+    const localData = window.localStorage.getItem("user");
+    if (localData && localData !== "") {
+      const data = JSON.parse(localData);
+      defaultState.token = data.token;
       defaultState.isLogged = true;
+      defaultState.user_id = data.user_id;
     }
     return defaultState;
   },
   actions: {
-    login(token: string) {
-      this.token = token;
+    async login(email: string, password: string) {
+      const response = await login(email, password);
+
+      this.token = response.data.token;
       this.isLogged = true;
-      window.localStorage.setItem("token", token);
+      this.user_id = response.data.user_id;
+      window.localStorage.setItem("user", JSON.stringify(response.data));
+    },
+    async register(email: string, password: string) {
+      await register(email, password);
+      await this.login(email, password);
     },
     logout() {
-      this.token = "";
-      this.isLogged = false;
+      this.$reset();
       window.localStorage.clear();
     },
   },

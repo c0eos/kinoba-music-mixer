@@ -7,7 +7,7 @@ const router = useRouter();
 
 function submit() {
   user.logout();
-  router.push("/login");
+  router.push("/");
 }
 </script>
 
