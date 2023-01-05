@@ -6,8 +6,9 @@ const user = useUserStore();
 const router = useRouter();
 
 function submit() {
-  user.logout();
-  router.push("/");
+  user.logout().then(() => {
+    router.push("/login");
+  });
 }
 </script>
 

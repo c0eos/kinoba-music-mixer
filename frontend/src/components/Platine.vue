@@ -32,11 +32,11 @@ function onDrag() {
       :class="{ spin: spinning }"
       @dragenter="onDrag"
     />
-    <Track
-      v-for="track in props.playlist.tracks"
-      :key="track.id"
-      :track="track"
-    />
+    <ul class="overflow-y-scroll h-64 mt-4">
+      <li v-for="track in props.playlist.tracks" :key="track.id" class="py-1">
+        <Track :track="track" action="del" />
+      </li>
+    </ul>
   </div>
 </template>
 

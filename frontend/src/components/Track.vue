@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { usePlaylistStore } from "@/stores/playlist";
 
-const props = defineProps(["track", "action", "parent_id"]);
+const props = defineProps(["track", "action"]);
 const playlistStore = usePlaylistStore();
 
 const selectedPlaylist = ref(-1);
@@ -64,7 +64,7 @@ function remove() {
           </option>
         </select>
       </template>
-      <template v-else>
+      <template v-else-if="props.action === 'del'">
         <button
           type="button"
           @click="remove"

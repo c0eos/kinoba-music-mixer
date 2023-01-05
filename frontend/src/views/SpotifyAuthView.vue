@@ -18,8 +18,10 @@ const url = ref(
 </script>
 
 <template>
-  <p>Obtenir un token Spotify :</p>
-  <button type="button" class="italic rounded-full p-2 bg-green-500">
-    <a :href="url">Login avec Spotify</a>
-  </button>
+  <div class="mx-auto w-fit mt-4">
+    <p>Obtenir un token Spotify :</p>
+    <button type="button" class="italic rounded-full p-2 mt-4 bg-green-500">
+      <a :href="url">Login avec Spotify</a>
+    </button>
+  </div>
 </template>
