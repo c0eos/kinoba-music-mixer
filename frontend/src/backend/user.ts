@@ -3,7 +3,7 @@ import axios from "axios";
 export async function login(email: string, password: string) {
   return axios
     .post(
-      "/api/users/login/",
+      `${import.meta.env.VITE_BACKEND_URL}/users/login/`,
       {
         email,
         password,
@@ -26,7 +26,7 @@ export async function login(email: string, password: string) {
 export async function register(email: string, password: string) {
   return axios
     .post(
-      "/api/users/",
+      `${import.meta.env.VITE_BACKEND_URL}/users/`,
       {
         email,
         password,

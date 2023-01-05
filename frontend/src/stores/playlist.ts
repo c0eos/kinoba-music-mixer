@@ -59,9 +59,15 @@ export const usePlaylistStore = defineStore("playlist", {
     },
     async playNext() {
       const next =
-        this.queueIdx === this.queue.length - 1 ? 0 : this.queueIdx + 1;
+        this.queueIdx >= this.queue.length - 1 ? 0 : this.queueIdx + 1;
 
       this.play(this.queue[next]);
+    },
+    async playPrevious() {
+      const previous =
+        this.queueIdx === 0 ? this.queue.length - 1 : this.queueIdx - 1;
+
+      this.play(this.queue[previous]);
     },
     updateQueue() {
       const arrays = toRaw(this.playlists) as Playlist[];

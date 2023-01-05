@@ -30,7 +30,7 @@ export const useUserStore = defineStore("user", {
       await register(email, password);
       await this.login(email, password);
     },
-    logout() {
+    async logout() {
       this.$reset();
       window.localStorage.clear();
     },

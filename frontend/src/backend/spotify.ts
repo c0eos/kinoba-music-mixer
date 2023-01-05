@@ -35,7 +35,7 @@ export async function playTrack(track: Track) {
   );
 }
 
-function formatTrack(data: any): Track {
+export function formatTrack(data: any): Track {
   const name = data.name;
   const id = -1;
   const playlist_id = -1;

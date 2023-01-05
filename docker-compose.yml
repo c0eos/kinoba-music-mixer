@@ -1,0 +1,50 @@
+x-common: &common
+  restart: unless-stopped
+  networks:
+    - kinoba
+
+services:
+  postgres:
+    <<: *common
+    container_name: postgres
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: $DATABASE_PASSWORD
+
+  backend:
+    <<: *common
+    container_name: backend
+    build: ./backend/
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    environment:
+      RAILS_ENV: production
+      DATABASE_USERNAME: $DATABASE_USERNAME
+      DATABASE_PASSWORD: $DATABASE_PASSWORD
+      DATABASE_HOST: postgres
+      DATABASE_NAME_PROD: $DATABASE_NAME_PROD
+      DATABASE_NAME_DEV: $DATABASE_NAME_DEV
+
+  frontend:
+    <<: *common
+    container_name: frontend
+    build:
+      context: ./frontend/
+      args:
+        VITE_BACKEND_URL: $VITE_BACKEND_URL
+    ports:
+      - 5173:80
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: production
+
+networks:
+  kinoba:
+    name: kinoba
